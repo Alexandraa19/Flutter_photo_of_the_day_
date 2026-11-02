@@ -1,17 +1,44 @@
-# photo_of_the_day_perehrest
+# photo_of_the_day
 
-A new Flutter project.
+приложение на Flutter, которое загружает случайные фотографии собак и пейзажей. показывает работу с `Future`, `async/await`, HTTP-запросами и обработкой ошибок.
 
-## Getting Started
+## Автор
+Перехрест Саша группы исп-242
 
-This project is a starting point for a Flutter application.
+## Стек и версии
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter 3.47.5
+- Dart 3.13.4
+- Платформа: Web (Chrome)
+- Пакет: `http` ^1.2.0
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Скриншот
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Фото дня](img/step2_ВашаФамилия.png)
+
+## Запуск
+
+1. `git clone <url>`
+2. `cd photo_of_the_day`
+3. `flutter pub get`
+4. `flutter run -d chrome`
+
+## Что изучили
+
+- что такое `Future<T>` и как он представляет результат в будущем
+- ключевые слова `async` / `await` и разница с `.then()`
+- отправка HTTP-запросов через `http.get()` и парсинг JSON через `jsonDecode()`
+- обработка ошибок в асинхронном коде через `try/catch`
+- управление состоянием экрана: загрузка / контент / ошибка через `setState()`
+
+## Ответы на вопросы
+
+1. `Future<T>` - объект-обещание, который вернёт значение типа `T` в будущем (сейчас результата нет). Обычное возвращаемое значение доступно сразу после вызова функции; `Future` — только после завершения асинхронной операции (через `await` или `.then()`).
+
+2. `await` приостанавливает выполнение текущей функции до завершения `Future`, после чего возвращает результат и продолжает выполнение. Весь поток (isolate) он **не блокирует** - Flutter продолжает отрисовку UI и обработку событий, поэтому интерфейс не «зависает».
+
+3. первый раз - чтобы сразу показать индикатор загрузки и сбросить предыдущий результат. Второй раз - чтобы после получения ответа скрыть индикатор и показать новое фото (или ошибку). Это два разных перехода состояния UI.
+
+4. без скобок передаётся **ссылка на функцию** - она будет вызвана только при нажатии. Со скобками функция вызвалась бы **немедленно** при построении виджета, а в `onPressed` оказался бы `null` (результат `Future<void>`).
+
+5.  `Image.network()` загружает изображение по URL из сети (асинхронно, нужен интернет). `Image.asset()` берёт изображение из локальных ресурсов проекта, объявленных в `pubspec.yaml` в секции `assets` - работает без интернета и быстрее.
